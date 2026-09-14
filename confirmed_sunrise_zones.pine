@@ -97,19 +97,19 @@ bool i_show_diagnostics = input.bool(false, "Show Diagnostic Audit Table",
      source                = i_github_repo,
      symbol                = "ZONES_TOKYO",
      expression            = [open, high, low, close, volume],
-     ignore_invalid_symbol = false)
+     ignore_invalid_symbol = true)
 
 [ln_hhmm, ln_sec, ln_date, ln_status, _ln_v] = request.seed(
      source                = i_github_repo,
      symbol                = "ZONES_LONDON",
      expression            = [open, high, low, close, volume],
-     ignore_invalid_symbol = false)
+     ignore_invalid_symbol = true)
 
 [ny_hhmm, ny_sec, ny_date, ny_status, _ny_v] = request.seed(
      source                = i_github_repo,
      symbol                = "ZONES_NYC",
      expression            = [open, high, low, close, volume],
-     ignore_invalid_symbol = false)
+     ignore_invalid_symbol = true)
 
 // ────────────────────────────────────────────────────────────
 // USER-DEFINED TYPE
