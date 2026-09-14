@@ -1,0 +1,34 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+.env
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+
+# Runtime directories (keep structure, ignore contents)
+cache/*
+!cache/.gitkeep
+logs/*
+!logs/.gitkeep
+
+# Validated records are committed
+# validated/* — do NOT ignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/

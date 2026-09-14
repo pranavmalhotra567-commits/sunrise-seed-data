@@ -1,0 +1,97 @@
+name: Update Confirmed Sunrise Data
+
+on:
+  schedule:
+    # 4x daily to catch all city sunrises regardless of UTC offset or DST
+    # Tokyo sunrise:   ~20:00-22:00 UTC (previous calendar day in UTC)
+    # London sunrise:  ~04:00-08:00 UTC
+    # NYC sunrise:     ~10:00-14:00 UTC
+    - cron: '0 0 * * *'    # 00:00 UTC
+    - cron: '0 6 * * *'    # 06:00 UTC
+    - cron: '0 12 * * *'   # 12:00 UTC
+    - cron: '0 18 * * *'   # 18:00 UTC
+  workflow_dispatch:
+    inputs:
+      force_refetch:
+        description: 'Force re-fetch all data (ignore local cache)'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  update-sunrise-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser
+        run: python -m playwright install chromium --with-deps
+
+      - name: Create required directories
+        run: mkdir -p data logs cache validated
+
+      - name: Run sunrise data update
+        id: update
+        run: python run_daily_update.py
+        env:
+          FORCE_REFETCH: ${{ github.event.inputs.force_refetch || 'false' }}
+        continue-on-error: true
+
+      - name: Check for data changes
+        id: check_changes
+        run: |
+          if git diff --quiet -- data/ validated/; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No data changes detected."
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Data changed — will commit."
+          fi
+
+      - name: Commit and push updated CSV files
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "GitHub Actions"
+          git add data/ validated/
+          git commit -m "chore: update confirmed sunrise data $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
+
+      - name: Report update status
+        if: always()
+        run: |
+          echo "Update step exit code: ${{ steps.update.outcome }}"
+          if [ -f logs/fetch_log.jsonl ]; then
+            echo "--- Last 10 log lines ---"
+            tail -10 logs/fetch_log.jsonl
+          fi
+
+      - name: Upload logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sunrise-logs-${{ github.run_id }}
+          path: logs/
+          retention-days: 30
