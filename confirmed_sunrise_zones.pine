@@ -211,9 +211,7 @@ create_zone(string city_name, float f_hhmm, float f_sec,
 
             // Zone geometry: wick-to-wick, extend rightward
             color fill   = color.new(zone_color, i_transparency)
-            color border = i_border_visible ?
-                            color.new(zone_color, 0) :
-                            color.new(color.white, 100)
+            color border = i_border_visible ? color.new(zone_color, 0) : color.new(color.white, 100)
 
             box b = box.new(
                  left         = bar_index,
@@ -438,19 +436,12 @@ if barstate.islast
             if na(z) or na(z.zone_box)
                 continue
 
-            string stime = z.sunrise_sec > 0 ?
-                 f_hhmmss(z.sunrise_hhmm, z.sunrise_sec) :
-                 f_hhmm(z.sunrise_hhmm)
+            string stime = z.sunrise_sec > 0 ? f_hhmmss(z.sunrise_hhmm, z.sunrise_sec) : f_hhmm(z.sunrise_hhmm)
             string utc_str = str.format_time(z.candle_time_ms, "yyyy-MM-dd HH:mm", "UTC") + " UTC"
-            string hilo    = str.tostring(z.zone_high, "#.####") + " / " +
-                             str.tostring(z.zone_low,  "#.####")
+            string hilo    = str.tostring(z.zone_high, "#.####") + " / " + str.tostring(z.zone_low, "#.####")
 
-            color city_col = z.city_name == "TOKYO"    ? i_tokyo_color  :
-                             z.city_name == "LONDON"   ? i_london_color :
-                             i_nyc_color
-            color rbg = i % 2 == 0 ?
-                 color.new(color.black, 55) :
-                 color.new(color.black, 70)
+            color city_col = z.city_name == "TOKYO" ? i_tokyo_color : z.city_name == "LONDON" ? i_london_color : i_nyc_color
+            color rbg = i % 2 == 0 ? color.new(color.black, 55) : color.new(color.black, 70)
 
             string[] cells = array.from(
                  z.city_name, f_date(z.local_date_int), stime,
