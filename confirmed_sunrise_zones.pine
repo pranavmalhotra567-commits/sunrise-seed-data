@@ -95,21 +95,21 @@ bool i_show_diagnostics = input.bool(false, "Show Diagnostic Audit Table",
 
 [tk_hhmm, tk_sec, tk_date, tk_status, _tk_v] = request.seed(
      source                = i_github_repo,
-     symbol                = "data/SUNRISE_TOKYO",
+     symbol                = "SUNRISE_TOKYO",
      expression            = [open, high, low, close, volume],
-     ignore_invalid_symbol = true)
+     ignore_invalid_symbol = false)
 
 [ln_hhmm, ln_sec, ln_date, ln_status, _ln_v] = request.seed(
      source                = i_github_repo,
-     symbol                = "data/SUNRISE_LONDON",
+     symbol                = "SUNRISE_LONDON",
      expression            = [open, high, low, close, volume],
-     ignore_invalid_symbol = true)
+     ignore_invalid_symbol = false)
 
 [ny_hhmm, ny_sec, ny_date, ny_status, _ny_v] = request.seed(
      source                = i_github_repo,
-     symbol                = "data/SUNRISE_NYC",
+     symbol                = "SUNRISE_NYC",
      expression            = [open, high, low, close, volume],
-     ignore_invalid_symbol = true)
+     ignore_invalid_symbol = false)
 
 // ────────────────────────────────────────────────────────────
 // USER-DEFINED TYPE
