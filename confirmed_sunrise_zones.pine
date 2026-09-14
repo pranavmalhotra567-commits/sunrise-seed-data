@@ -95,19 +95,19 @@ bool i_show_diagnostics = input.bool(false, "Show Diagnostic Audit Table",
 
 [tk_hhmm, tk_sec, tk_date, tk_status, _tk_v] = request.seed(
      source                = i_github_repo,
-     symbol                = "DATA_TOKYO",
+     symbol                = "Z_TOKYO",
      expression            = [open, high, low, close, volume],
      ignore_invalid_symbol = true)
 
 [ln_hhmm, ln_sec, ln_date, ln_status, _ln_v] = request.seed(
      source                = i_github_repo,
-     symbol                = "DATA_LONDON",
+     symbol                = "Z_LONDON",
      expression            = [open, high, low, close, volume],
      ignore_invalid_symbol = true)
 
 [ny_hhmm, ny_sec, ny_date, ny_status, _ny_v] = request.seed(
      source                = i_github_repo,
-     symbol                = "DATA_NYC",
+     symbol                = "Z_NYC",
      expression            = [open, high, low, close, volume],
      ignore_invalid_symbol = true)
 
@@ -202,7 +202,7 @@ create_zone(string city_name, float f_hhmm, float f_sec,
             na
         else
             int   hhmm        = int(f_hhmm)
-            int   sec         = int(f_sec)
+            int   sec         = int(f_sec) - 1
             int   date_int    = int(f_date_f)
             int   status_code = int(f_status_f)
             float bar_hi      = high   // real chart candle HIGH

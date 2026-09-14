@@ -27,9 +27,9 @@ from sunrise_fetcher import SunriseRecord, is_confirmed
 # ============================================================
 
 CITY_FILE_MAP = {
-    "tokyo":   "DATA_TOKYO.csv",
-    "london":  "DATA_LONDON.csv",
-    "newyork": "DATA_NYC.csv",
+    "tokyo":   "Z_TOKYO.csv",
+    "london":  "Z_LONDON.csv",
+    "newyork": "Z_NYC.csv",
 }
 
 CSV_HEADER = ["time", "open", "high", "low", "close", "volume"]
@@ -43,8 +43,8 @@ def _encode_record(record: SunriseRecord, status_code: int = 1) -> list:
     hhmm = record.local_sunrise_hh * 100 + record.local_sunrise_mm
     ss   = record.local_sunrise_ss
     date_int = int(record.local_date.replace("-", ""))
-    iso_time = datetime.datetime.utcfromtimestamp(record.candle_open_utc_ms / 1000.0).strftime("%Y-%m-%dT%H:%M:%SZ")
-    return [iso_time, hhmm, date_int, 0, status_code, ss + 1]
+    # Use raw Unix milliseconds to guarantee exact match with TradingView's internal time
+    return [record.candle_open_utc_ms, hhmm, date_int, 0, status_code, ss + 1]
 
 
 def _decode_row(row: dict) -> dict:
