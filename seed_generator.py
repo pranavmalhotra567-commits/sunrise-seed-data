@@ -27,9 +27,9 @@ from sunrise_fetcher import SunriseRecord, is_confirmed
 # ============================================================
 
 CITY_FILE_MAP = {
-    "tokyo":   "ZONES_TOKYO.csv",
-    "london":  "ZONES_LONDON.csv",
-    "newyork": "ZONES_NYC.csv",
+    "tokyo":   "DATA_TOKYO.csv",
+    "london":  "DATA_LONDON.csv",
+    "newyork": "DATA_NYC.csv",
 }
 
 CSV_HEADER = ["time", "open", "high", "low", "close", "volume"]
