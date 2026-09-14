@@ -62,20 +62,20 @@ jobs:
       - name: Check for data changes
         id: check_changes
         run: |
-          if git diff --quiet -- data/ validated/; then
+          if git diff --quiet -- *.csv validated/; then
             echo "changed=false" >> $GITHUB_OUTPUT
             echo "No data changes detected."
           else
             echo "changed=true" >> $GITHUB_OUTPUT
-            echo "Data changed — will commit."
+            echo "Data changed - will commit."
           fi
 
       - name: Commit and push updated CSV files
         if: steps.check_changes.outputs.changed == 'true'
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions"
-          git add data/ validated/
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add *.csv validated/
           git commit -m "chore: update confirmed sunrise data $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push
 

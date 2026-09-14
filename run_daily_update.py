@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 run_daily_update.py
 Orchestrator: fetch confirmed sunrises -> cross-check -> generate CSVs.
@@ -114,9 +114,9 @@ def main():
     # Step 4: Generate CSVs
     logger.info("Generating seed CSV files...")
     try:
-        paths = generate_all_csvs(records, output_dir="data",
-                                   crosscheck_results=crosscheck_results,
-                                   max_days=MAX_DAYS)
+        paths = generate_all_csvs(records, output_dir=".",
+                                  crosscheck_results=crosscheck_results,
+                                  max_days=MAX_DAYS)
         for city, path in paths.items():
             logger.info("Written: %s -> %s", city, path)
     except Exception as exc:

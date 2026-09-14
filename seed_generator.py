@@ -1,6 +1,7 @@
-﻿import os
+import os
 import csv
 import time
+import datetime
 from typing import List, Dict
 
 from sunrise_fetcher import SunriseRecord, is_confirmed
@@ -42,7 +43,8 @@ def _encode_record(record: SunriseRecord, status_code: int = 1) -> list:
     hhmm = record.local_sunrise_hh * 100 + record.local_sunrise_mm
     ss   = record.local_sunrise_ss
     date_int = int(record.local_date.replace("-", ""))
-    return [record.candle_open_utc_ms, hhmm, ss, date_int, status_code, 0]
+    iso_time = datetime.datetime.utcfromtimestamp(record.candle_open_utc_ms / 1000.0).strftime("%Y-%m-%dT%H:%M:%SZ")
+    return [iso_time, hhmm, ss, date_int, status_code, 0]
 
 
 def _decode_row(row: dict) -> dict:
