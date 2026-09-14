@@ -44,7 +44,7 @@ def _encode_record(record: SunriseRecord, status_code: int = 1) -> list:
     ss   = record.local_sunrise_ss
     date_int = int(record.local_date.replace("-", ""))
     iso_time = datetime.datetime.utcfromtimestamp(record.candle_open_utc_ms / 1000.0).strftime("%Y-%m-%dT%H:%M:%SZ")
-    return [iso_time, hhmm, date_int, 0, status_code, ss]
+    return [iso_time, hhmm, date_int, 0, status_code, ss + 1]
 
 
 def _decode_row(row: dict) -> dict:
