@@ -182,7 +182,7 @@ _sz() => i_label_size == "tiny" ? size.tiny : i_label_size == "normal" ? size.no
 _create(k, dateInt, clr, name, tz, is_override) =>
     fill = color.new(clr, i_fill_transp)
     bord = i_border_vis ? color.new(clr, 0) : color.new(color.white, 100)
-    bx   = box.new(bar_index, high, bar_index, low,
+    bx   = box.new(bar_index, high, bar_index + 1, low,
                    bgcolor=fill, border_color=bord, border_width=i_border_width,
                    extend=extend.right, xloc=xloc.bar_index)
 
