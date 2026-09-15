@@ -166,10 +166,11 @@ var array<Zone> zones = array.new<Zone>()
 
 _zoneExists(k) =>
     found = false
-    for i = 0 to zones.size() - 1
-        if zones.get(i).key == k
-            found := true
-            break
+    if zones.size() > 0
+        for i = 0 to zones.size() - 1
+            if zones.get(i).key == k
+                found := true
+                break
     found
 
 // ────────────────────────────────────────────────────────────
