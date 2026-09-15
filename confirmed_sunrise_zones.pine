@@ -191,7 +191,7 @@ _create(k, dateInt, clr, name, tz, is_override) =>
                               color=color.new(clr, 35), width=1,
                               style=line.style_dashed) : na
 
-    lbl = na
+    label lbl = na
     if i_show_labels
         t_str    = str.tostring(hour(time, tz), "00") + ":" + str.tostring(minute(time, tz), "00")
         src_mark = is_override ? " ✓" : ""
