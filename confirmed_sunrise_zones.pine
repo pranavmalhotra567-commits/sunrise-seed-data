@@ -1,4 +1,4 @@
-﻿//@version=6
+//@version=6
 // ════════════════════════════════════════════════════════════
 //  CONFIRMED SUNRISE ZONES  |  v3.0  |  Pine Script v6
 //
@@ -82,8 +82,13 @@ NY_LNG = -74.0060
 // Fully UTC-based: DST has zero effect. ±1-2 min vs astral lib.
 // ────────────────────────────────────────────────────────────
 
-_wrap360(x) => v = x % 360.0; v < 0 ? v + 360.0 : v
-_wrap24(x)  => v = x % 24.0;  v < 0 ? v + 24.0  : v
+_wrap360(x) =>
+    v = x % 360.0
+    v < 0 ? v + 360.0 : v
+
+_wrap24(x) =>
+    v = x % 24.0
+    v < 0 ? v + 24.0 : v
 _isLeap(y)  => (y % 4 == 0 and y % 100 != 0) or (y % 400 == 0)
 
 _doy(y, m, d) =>
@@ -103,7 +108,7 @@ _sunriseUtcMin(lat, lng, offsetSec) =>
     rM = M * math.pi / 180.0
     L  = _wrap360(M + 1.916*math.sin(rM) + 0.020*math.sin(2.0*rM) + 282.634)
     rL = L * math.pi / 180.0
-    RA0 = math.degrees(math.atan(0.91764 * math.tan(rL)))
+    RA0 = math.todegrees(math.atan(0.91764 * math.tan(rL)))
     RA1 = _wrap360(RA0)
     Lq  = math.floor(L  / 90.0) * 90.0
     RAq = math.floor(RA1 / 90.0) * 90.0
@@ -115,7 +120,7 @@ _sunriseUtcMin(lat, lng, offsetSec) =>
     if cosH > 1.0 or cosH < -1.0
         na
     else
-        H = (360.0 - math.degrees(math.acos(cosH))) / 15.0
+        H = (360.0 - math.todegrees(math.acos(cosH))) / 15.0
         T = H + RA - 0.06571 * t - 6.622
         int(math.round((_wrap24(T - lh) * 60.0 + offsetSec / 60.0) % 1440))
 
@@ -221,8 +226,10 @@ _enforceWindow() =>
             z = zones.get(i)
             if not array.includes(keep, z.date_int)
                 box.delete(z.bx)
-                if not na(z.eq)  then line.delete(z.eq)
-                if not na(z.lbl) then label.delete(z.lbl)
+                if not na(z.eq)
+                    line.delete(z.eq)
+                if not na(z.lbl)
+                    label.delete(z.lbl)
                 zones.remove(i)
             i -= 1
 
@@ -290,7 +297,8 @@ var table info_tbl   = na
 
 if barstate.islast
     // ── Info table ──
-    if not na(info_tbl) then table.delete(info_tbl)
+    if not na(info_tbl)
+        table.delete(info_tbl)
     info_tbl := table.new(position.bottom_right, 2, 3,
                           bgcolor=color.new(color.black, 30),
                           frame_color=color.new(color.gray, 50), frame_width=1,
@@ -313,7 +321,8 @@ if barstate.islast
 
     // ── Verification panel ──
     if i_show_verify
-        if not na(verify_tbl) then table.delete(verify_tbl)
+        if not na(verify_tbl)
+            table.delete(verify_tbl)
         verify_tbl := table.new(position.top_right, 4, 5,
                                 bgcolor=color.new(color.black, 20),
                                 frame_color=color.new(color.gray, 40), frame_width=1,
