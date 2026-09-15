@@ -17,6 +17,7 @@ indicator("Confirmed Sunrise Zones", overlay=true,
 // ────────────────────────────────────────────────────────────
 
 i_keep_days   = input.int(12, "Rolling Window (Days)", minval=1, maxval=30, group="Window")
+i_zone_length = input.int(24, "Zone Length (Hours)", minval=1, maxval=72, group="Window", tooltip="How far the zone extends to the right. Replaces infinite extend to fix TradingView panning bugs.")
 i_show_tokyo  = input.bool(true, "Tokyo",    inline="c", group="Cities")
 i_show_london = input.bool(true, "London",   inline="c", group="Cities")
 i_show_nyc    = input.bool(true, "New York", inline="c", group="Cities")
@@ -182,13 +183,14 @@ _sz() => i_label_size == "tiny" ? size.tiny : i_label_size == "normal" ? size.no
 _create(k, dateInt, clr, name, tz, is_override) =>
     fill = color.new(clr, i_fill_transp)
     bord = i_border_vis ? color.new(clr, 0) : color.new(color.white, 100)
-    bx   = box.new(time, high, time + 60000, low,
+    end_time = time + (i_zone_length * 60 * 60 * 1000)
+    bx   = box.new(time, high, end_time, low,
                    bgcolor=fill, border_color=bord, border_width=i_border_width,
-                   extend=extend.right, xloc=xloc.bar_time)
+                   xloc=xloc.bar_time)
 
     eq_price = (high + low) / 2.0
-    eq = i_show_eq ? line.new(time, eq_price, time + 60000, eq_price,
-                              xloc=xloc.bar_time, extend=extend.right,
+    eq = i_show_eq ? line.new(time, eq_price, end_time, eq_price,
+                              xloc=xloc.bar_time,
                               color=color.new(clr, 35), width=1,
                               style=line.style_dashed) : na
 
