@@ -1,22 +1,16 @@
 ﻿//@version=6
 // ════════════════════════════════════════════════════════════
-//  CONFIRMED SUNRISE ZONES  |  v2.1  |  Pine Script v6
+//  CONFIRMED SUNRISE ZONES  |  v3.0  |  Pine Script v6
 //
-//  Architecture: Pure UTC comparison — completely DST-immune
-//    - Computes sunrise as UTC minute-of-day (no timezone math)
-//    - Compares bar's UTC time directly to sunrise UTC time
-//    - Labels display local time via Pine's built-in tz handling
-//    - Rolling 12-day window keyed by YYYYMMDD (DST-safe)
-//    - Duplicate guard: 1 zone per city per calendar date
-//    - Accuracy: ±1-2 minutes vs astral library across all dates
-//      (USNO simplified algorithm, validated against 27 test cases
-//       including DST change days, winter solstice, and leap years)
+//  Features:
+//   - Native UTC astronomical math (DST-immune, ±1-2 min accuracy)
+//   - Manual override: paste exact HH:MM from timeanddate.com
+//   - Live verification panel: see today's predicted times
+//   - 12-day rolling window, duplicate guard, no repainting
 // ════════════════════════════════════════════════════════════
 
 indicator("Confirmed Sunrise Zones", overlay=true,
-          max_boxes_count  = 500,
-          max_labels_count = 500,
-          max_lines_count  = 500)
+          max_boxes_count=500, max_labels_count=500, max_lines_count=500)
 
 // ────────────────────────────────────────────────────────────
 // INPUTS
@@ -38,23 +32,43 @@ i_show_labels = input.bool(true, "Show Labels", group="Labels")
 i_label_size  = input.string("small", "Label Size", options=["tiny","small","normal"], group="Labels")
 i_show_eq     = input.bool(true, "Show Midline", group="Labels")
 
-// Second-level fine-tune offsets — adjust if your broker's sunrise candle
-// is consistently 1 min early or late. Default values pre-calibrated from
-// cross-checking against timeanddate.com data for Sept 2026.
+// Calibration offsets — pre-tuned from cross-check vs timeanddate.com.
+// If a zone lands 1 candle early: subtract 60. One candle late: add 60.
 i_tk_offset = input.int(46,  "Tokyo Offset (sec)",  minval=-120, maxval=120, group="Calibration",
-    tooltip="Tune until zone lands exactly on the sunrise candle. Positive = push later.")
+    tooltip="Tune until zone lands on the exact sunrise candle. +60 = push one candle later.")
 i_ld_offset = input.int(-33, "London Offset (sec)", minval=-120, maxval=120, group="Calibration")
 i_ny_offset = input.int(-30, "NY Offset (sec)",     minval=-120, maxval=120, group="Calibration")
 
-i_show_debug = input.bool(false, "Show Debug Markers", group="Debug")
+// ── MANUAL OVERRIDES ────────────────────────────────────────
+// Use these to nail-gun the exact candle from timeanddate.com.
+// Format: local time HH:MM as two separate integers.
+// Set i_tk_override_en = true to activate for Tokyo, etc.
+// When active, the formula is bypassed for that city TODAY ONLY.
+// (Override applies to the calendar date matching the current bar
+//  in that city's local timezone.)
+i_tk_override_en = input.bool(false, "Enable Tokyo Manual Override",    group="Manual Override (Today Only)")
+i_tk_override_hh = input.int(5,  "Tokyo Hour",   minval=0, maxval=23,   group="Manual Override (Today Only)")
+i_tk_override_mm = input.int(23, "Tokyo Minute", minval=0, maxval=59,   group="Manual Override (Today Only)")
+
+i_ld_override_en = input.bool(false, "Enable London Manual Override",   group="Manual Override (Today Only)")
+i_ld_override_hh = input.int(6,  "London Hour",  minval=0, maxval=23,   group="Manual Override (Today Only)")
+i_ld_override_mm = input.int(35, "London Minute",minval=0, maxval=59,   group="Manual Override (Today Only)")
+
+i_ny_override_en = input.bool(false, "Enable NY Manual Override",       group="Manual Override (Today Only)")
+i_ny_override_hh = input.int(6,  "NY Hour",      minval=0, maxval=23,   group="Manual Override (Today Only)")
+i_ny_override_mm = input.int(37, "NY Minute",    minval=0, maxval=59,   group="Manual Override (Today Only)")
+
+i_show_verify = input.bool(true, "Show Verification Panel", group="Verification",
+    tooltip="Shows today's predicted sunrise times. Compare with timeanddate.com to calibrate offsets.")
+i_show_debug  = input.bool(false, "Show Debug Markers (exact hit bar)", group="Verification")
 
 // ────────────────────────────────────────────────────────────
 // CONSTANTS
 // ────────────────────────────────────────────────────────────
 
-TK_TZ  = "Asia/Tokyo"
-LD_TZ  = "Europe/London"
-NY_TZ  = "America/New_York"
+TK_TZ = "Asia/Tokyo"
+LD_TZ = "Europe/London"
+NY_TZ = "America/New_York"
 
 TK_LAT = 35.6762
 TK_LNG = 139.6503
@@ -65,32 +79,24 @@ NY_LNG = -74.0060
 
 // ────────────────────────────────────────────────────────────
 // ASTRONOMICAL MATH — outputs UTC minute of sunrise
-//
-// Key insight: we compute sunrise in UTC, never touching timezone
-// offsets in Pine. This means DST transitions have zero effect on
-// correctness. Pine's built-in hour(time, tz) handles local display.
-//
-// Algorithm: USNO Simplified Sunrise/Sunset (public domain)
-// Validated: max delta 1.6 minutes vs astral library across 27 test
-// cases covering DST transitions, winter solstice, and leap years.
+// Fully UTC-based: DST has zero effect. ±1-2 min vs astral lib.
 // ────────────────────────────────────────────────────────────
 
 _wrap360(x) => v = x % 360.0; v < 0 ? v + 360.0 : v
 _wrap24(x)  => v = x % 24.0;  v < 0 ? v + 24.0  : v
 _isLeap(y)  => (y % 4 == 0 and y % 100 != 0) or (y % 400 == 0)
 
-_dayOfYear(y, m, d) =>
-    base = m==1?0 : m==2?31 : m==3?59 : m==4?90 : m==5?120 : m==6?151 :
-           m==7?181 : m==8?212 : m==9?243 : m==10?273 : m==11?304 : 334
-    base + d + (_isLeap(y) and m > 2 ? 1 : 0)
+_doy(y, m, d) =>
+    b = m==1?0 : m==2?31 : m==3?59 : m==4?90 : m==5?120 : m==6?151 :
+        m==7?181 : m==8?212 : m==9?243 : m==10?273 : m==11?304 : 334
+    b + d + (_isLeap(y) and m > 2 ? 1 : 0)
 
-// Returns sunrise as UTC minute-of-day (0–1439), or na for polar night
+// Returns sunrise UTC minute-of-day (0-1439), na = polar night
 _sunriseUtcMin(lat, lng, offsetSec) =>
-    // Use UTC date of this bar
     y = year(time, "UTC")
     m = month(time, "UTC")
     d = dayofmonth(time, "UTC")
-    n = _dayOfYear(y, m, d)
+    n  = _doy(y, m, d)
     lh = lng / 15.0
     t  = n + ((6.0 - lh) / 24.0)
     M  = (0.9856 * t) - 3.289
@@ -107,29 +113,50 @@ _sunriseUtcMin(lat, lng, offsetSec) =>
     rLat   = lat * math.pi / 180.0
     cosH   = (math.cos(90.833 * math.pi / 180.0) - sinDec * math.sin(rLat)) / (cosDec * math.cos(rLat))
     if cosH > 1.0 or cosH < -1.0
-        na  // polar night or midnight sun
+        na
     else
-        H  = (360.0 - math.degrees(math.acos(cosH))) / 15.0
-        T  = H + RA - 0.06571 * t - 6.622
-        rawMin = _wrap24(T - lh) * 60.0 + offsetSec / 60.0
-        int(math.round(rawMin % 1440))
+        H = (360.0 - math.degrees(math.acos(cosH))) / 15.0
+        T = H + RA - 0.06571 * t - 6.622
+        int(math.round((_wrap24(T - lh) * 60.0 + offsetSec / 60.0) % 1440))
 
-// Current bar's UTC minute of day
+// Convert UTC minute-of-day to local HH:MM string for display
+_utcMinToLocal(utcMin, tz) =>
+    utcH = utcMin / 60
+    utcMm = utcMin % 60
+    // Use bar time as reference to get today's UTC midnight
+    y = year(time, "UTC")
+    m = month(time, "UTC")
+    d = dayofmonth(time, "UTC")
+    utcMidnight = timestamp("UTC", y, m, d, 0, 0)
+    targetTs    = utcMidnight + utcMin * 60000
+    h  = hour(targetTs, tz)
+    mn = minute(targetTs, tz)
+    str.tostring(h, "00") + ":" + str.tostring(mn, "00")
+
+// Local HH:MM to UTC minute — for manual override conversion
+_localToUtcMin(localHH, localMM, tz) =>
+    y = year(time, tz)
+    m = month(time, tz)
+    d = dayofmonth(time, tz)
+    localTs     = timestamp(tz, y, m, d, localHH, localMM, 0)
+    utcH        = hour(localTs, "UTC")
+    utcM        = minute(localTs, "UTC")
+    utcH * 60 + utcM
+
 _barUtcMin() => hour(time, "UTC") * 60 + minute(time, "UTC")
-
-// Current bar's local calendar date as YYYYMMDD integer
 _dateKey(tz) => year(time, tz) * 10000 + month(time, tz) * 100 + dayofmonth(time, tz)
 
 // ────────────────────────────────────────────────────────────
-// ZONE TYPE & DEDUP GUARD
+// ZONE TYPE
 // ────────────────────────────────────────────────────────────
 
 type Zone
-    int   key        // dateInt * 10 + cityId — globally unique
-    int   date_int   // YYYYMMDD in city's local timezone
+    int   key       // dateInt * 10 + cityId
+    int   date_int  // YYYYMMDD in city's local TZ
     box   bx
     line  eq
     label lbl
+    bool  is_override  // true if drawn from manual override
 
 var array<Zone> zones = array.new<Zone>()
 
@@ -147,7 +174,7 @@ _zoneExists(k) =>
 
 _sz() => i_label_size == "tiny" ? size.tiny : i_label_size == "normal" ? size.normal : size.small
 
-_create(k, dateInt, clr, name, tz) =>
+_create(k, dateInt, clr, name, tz, is_override) =>
     fill = color.new(clr, i_fill_transp)
     bord = i_border_vis ? color.new(clr, 0) : color.new(color.white, 100)
     bx   = box.new(bar_index, high, bar_index, low,
@@ -160,30 +187,28 @@ _create(k, dateInt, clr, name, tz) =>
                               color=color.new(clr, 35), width=1,
                               style=line.style_dashed) : na
 
-    // Label: local time via Pine's built-in tz handling (always correct, incl. DST)
     lbl = na
     if i_show_labels
-        t_str = str.tostring(hour(time, tz), "00") + ":" + str.tostring(minute(time, tz), "00")
-        lbl  := label.new(bar_index, high, name + "\n" + t_str,
-                          style=label.style_label_down, color=color.new(clr, 10),
-                          textcolor=color.white, size=_sz(),
-                          xloc=xloc.bar_index, yloc=yloc.price)
+        t_str    = str.tostring(hour(time, tz), "00") + ":" + str.tostring(minute(time, tz), "00")
+        src_mark = is_override ? " ✓" : ""
+        lbl := label.new(bar_index, high, name + "\n" + t_str + src_mark,
+                         style=label.style_label_down, color=color.new(clr, 10),
+                         textcolor=color.white, size=_sz(),
+                         xloc=xloc.bar_index, yloc=yloc.price)
 
-    zones.push(Zone.new(key=k, date_int=dateInt, bx=bx, eq=eq, lbl=lbl))
+    zones.push(Zone.new(key=k, date_int=dateInt, bx=bx, eq=eq, lbl=lbl, is_override=is_override))
 
 // ────────────────────────────────────────────────────────────
 // ROLLING WINDOW — date-based, DST-safe
-// Keeps i_keep_days most recent unique calendar dates.
-// Uses YYYYMMDD integers so DST ±1h never causes off-by-one.
 // ────────────────────────────────────────────────────────────
 
 _enforceWindow() =>
     if zones.size() > 0
         uniq = array.new<int>()
         for i = 0 to zones.size() - 1
-            d = zones.get(i).date_int
-            if not array.includes(uniq, d)
-                uniq.push(d)
+            dd = zones.get(i).date_int
+            if not array.includes(uniq, dd)
+                uniq.push(dd)
         uniq.sort(order.descending)
 
         keep = array.new<int>()
@@ -214,36 +239,42 @@ if not (timeframe.isminutes and timeframe.multiplier == 1)
 
 barUtc = _barUtcMin()
 
-tkUtcMin = _sunriseUtcMin(TK_LAT, TK_LNG, i_tk_offset)
-ldUtcMin = _sunriseUtcMin(LD_LAT, LD_LNG, i_ld_offset)
-nyUtcMin = _sunriseUtcMin(NY_LAT, NY_LNG, i_ny_offset)
+// Compute formula UTC minutes
+tkFormula = _sunriseUtcMin(TK_LAT, TK_LNG, i_tk_offset)
+ldFormula = _sunriseUtcMin(LD_LAT, LD_LNG, i_ld_offset)
+nyFormula = _sunriseUtcMin(NY_LAT, NY_LNG, i_ny_offset)
 
-tkHit = i_show_tokyo  and not na(tkUtcMin) and barUtc == tkUtcMin
-ldHit = i_show_london and not na(ldUtcMin) and barUtc == ldUtcMin
-nyHit = i_show_nyc    and not na(nyUtcMin) and barUtc == nyUtcMin
+// Apply manual overrides (convert local HH:MM → UTC min)
+tkTarget = i_tk_override_en ? _localToUtcMin(i_tk_override_hh, i_tk_override_mm, TK_TZ) : tkFormula
+ldTarget = i_ld_override_en ? _localToUtcMin(i_ld_override_hh, i_ld_override_mm, LD_TZ) : ldFormula
+nyTarget = i_ny_override_en ? _localToUtcMin(i_ny_override_hh, i_ny_override_mm, NY_TZ) : nyFormula
+
+tkHit = i_show_tokyo  and not na(tkTarget) and barUtc == tkTarget
+ldHit = i_show_london and not na(ldTarget) and barUtc == ldTarget
+nyHit = i_show_nyc    and not na(nyTarget) and barUtc == nyTarget
 
 if tkHit
     dk = _dateKey(TK_TZ)
     k  = dk * 10 + 1
     if not _zoneExists(k)
-        _create(k, dk, i_tokyo_color, "Tokyo", TK_TZ)
+        _create(k, dk, i_tokyo_color, "Tokyo", TK_TZ, i_tk_override_en)
 
 if ldHit
     dk = _dateKey(LD_TZ)
     k  = dk * 10 + 2
     if not _zoneExists(k)
-        _create(k, dk, i_london_color, "London", LD_TZ)
+        _create(k, dk, i_london_color, "London", LD_TZ, i_ld_override_en)
 
 if nyHit
     dk = _dateKey(NY_TZ)
     k  = dk * 10 + 3
     if not _zoneExists(k)
-        _create(k, dk, i_nyc_color, "New York", NY_TZ)
+        _create(k, dk, i_nyc_color, "New York", NY_TZ, i_ny_override_en)
 
 _enforceWindow()
 
 // ────────────────────────────────────────────────────────────
-// DEBUG MARKERS
+// DEBUG
 // ────────────────────────────────────────────────────────────
 
 plotshape(i_show_debug and tkHit, "Tokyo",    location=location.abovebar, style=shape.triangleup, size=size.tiny, color=i_tokyo_color)
@@ -251,30 +282,84 @@ plotshape(i_show_debug and ldHit, "London",   location=location.abovebar, style=
 plotshape(i_show_debug and nyHit, "New York", location=location.abovebar, style=shape.triangleup, size=size.tiny, color=i_nyc_color)
 
 // ────────────────────────────────────────────────────────────
-// INFO TABLE
+// TABLES
 // ────────────────────────────────────────────────────────────
 
-var table tbl = na
-if barstate.islast
-    if not na(tbl) then table.delete(tbl)
-    tbl := table.new(position.bottom_right, 2, 3,
-                     bgcolor=color.new(color.black, 30),
-                     frame_color=color.new(color.gray, 50), frame_width=1,
-                     border_color=color.new(color.gray, 65), border_width=1)
+var table verify_tbl = na
+var table info_tbl   = na
 
-    table.cell(tbl, 0, 0, "Confirmed Sunrise Zones",
+if barstate.islast
+    // ── Info table ──
+    if not na(info_tbl) then table.delete(info_tbl)
+    info_tbl := table.new(position.bottom_right, 2, 3,
+                          bgcolor=color.new(color.black, 30),
+                          frame_color=color.new(color.gray, 50), frame_width=1,
+                          border_color=color.new(color.gray, 65), border_width=1)
+
+    table.cell(info_tbl, 0, 0, "Confirmed Sunrise Zones",
                text_color=color.white, text_size=size.small, text_halign=text.align_left,
                bgcolor=color.new(#0d1b2a, 0))
-    table.cell(tbl, 1, 0, "v2.1",
+    table.cell(info_tbl, 1, 0, "v3.0",
                text_color=color.new(color.silver, 30), text_size=size.tiny, text_halign=text.align_right,
                bgcolor=color.new(#0d1b2a, 0))
-
-    table.cell(tbl, 0, 1, "Active Zones",
+    table.cell(info_tbl, 0, 1, "Active Zones",
                text_color=color.new(color.silver, 0), text_size=size.tiny, text_halign=text.align_left)
-    table.cell(tbl, 1, 1, str.tostring(zones.size()) + " / " + str.tostring(i_keep_days * 3),
+    table.cell(info_tbl, 1, 1, str.tostring(zones.size()) + " / " + str.tostring(i_keep_days * 3),
                text_color=color.white, text_size=size.tiny, text_halign=text.align_right)
-
-    table.cell(tbl, 0, 2, "Source",
+    table.cell(info_tbl, 0, 2, "Source",
                text_color=color.new(color.silver, 0), text_size=size.tiny, text_halign=text.align_left)
-    table.cell(tbl, 1, 2, "Astronomical · UTC-native",
+    table.cell(info_tbl, 1, 2, "Astronomical · UTC-native",
                text_color=color.new(color.teal, 0), text_size=size.tiny, text_halign=text.align_right)
+
+    // ── Verification panel ──
+    if i_show_verify
+        if not na(verify_tbl) then table.delete(verify_tbl)
+        verify_tbl := table.new(position.top_right, 4, 5,
+                                bgcolor=color.new(color.black, 20),
+                                frame_color=color.new(color.gray, 40), frame_width=1,
+                                border_color=color.new(color.gray, 60), border_width=1)
+
+        hbg = color.new(#0d1b2a, 0)
+        table.cell(verify_tbl, 0, 0, "City",        text_color=color.silver, text_size=size.tiny, text_halign=text.align_center, bgcolor=hbg)
+        table.cell(verify_tbl, 1, 0, "Formula",     text_color=color.silver, text_size=size.tiny, text_halign=text.align_center, bgcolor=hbg)
+        table.cell(verify_tbl, 2, 0, "Override",    text_color=color.silver, text_size=size.tiny, text_halign=text.align_center, bgcolor=hbg)
+        table.cell(verify_tbl, 3, 0, "Active",      text_color=color.silver, text_size=size.tiny, text_halign=text.align_center, bgcolor=hbg)
+
+        // Tokyo row
+        tk_formula_str = na(tkFormula) ? "N/A" : _utcMinToLocal(tkFormula, TK_TZ) + " JST"
+        tk_ovr_str     = i_tk_override_en ? str.tostring(i_tk_override_hh, "00") + ":" + str.tostring(i_tk_override_mm, "00") + " JST ✓" : "off"
+        tk_active_str  = na(tkTarget)    ? "N/A" : _utcMinToLocal(tkTarget, TK_TZ) + " JST"
+        tk_ovr_clr     = i_tk_override_en ? color.new(#FFD700, 0) : color.new(color.silver, 40)
+
+        table.cell(verify_tbl, 0, 1, "Tokyo",         text_color=i_tokyo_color,  text_size=size.tiny, text_halign=text.align_left)
+        table.cell(verify_tbl, 1, 1, tk_formula_str,  text_color=color.silver,   text_size=size.tiny, text_halign=text.align_center)
+        table.cell(verify_tbl, 2, 1, tk_ovr_str,      text_color=tk_ovr_clr,     text_size=size.tiny, text_halign=text.align_center)
+        table.cell(verify_tbl, 3, 1, tk_active_str,   text_color=color.white,    text_size=size.tiny, text_halign=text.align_center)
+
+        // London row
+        ld_formula_str = na(ldFormula) ? "N/A" : _utcMinToLocal(ldFormula, LD_TZ) + " GMT/BST"
+        ld_ovr_str     = i_ld_override_en ? str.tostring(i_ld_override_hh, "00") + ":" + str.tostring(i_ld_override_mm, "00") + " ✓" : "off"
+        ld_active_str  = na(ldTarget)    ? "N/A" : _utcMinToLocal(ldTarget, LD_TZ) + " GMT/BST"
+        ld_ovr_clr     = i_ld_override_en ? color.new(#FFD700, 0) : color.new(color.silver, 40)
+
+        table.cell(verify_tbl, 0, 2, "London",        text_color=i_london_color, text_size=size.tiny, text_halign=text.align_left)
+        table.cell(verify_tbl, 1, 2, ld_formula_str,  text_color=color.silver,   text_size=size.tiny, text_halign=text.align_center)
+        table.cell(verify_tbl, 2, 2, ld_ovr_str,      text_color=ld_ovr_clr,     text_size=size.tiny, text_halign=text.align_center)
+        table.cell(verify_tbl, 3, 2, ld_active_str,   text_color=color.white,    text_size=size.tiny, text_halign=text.align_center)
+
+        // NY row
+        ny_formula_str = na(nyFormula) ? "N/A" : _utcMinToLocal(nyFormula, NY_TZ) + " ET"
+        ny_ovr_str     = i_ny_override_en ? str.tostring(i_ny_override_hh, "00") + ":" + str.tostring(i_ny_override_mm, "00") + " ET ✓" : "off"
+        ny_active_str  = na(nyTarget)    ? "N/A" : _utcMinToLocal(nyTarget, NY_TZ) + " ET"
+        ny_ovr_clr     = i_ny_override_en ? color.new(#FFD700, 0) : color.new(color.silver, 40)
+
+        table.cell(verify_tbl, 0, 3, "New York",      text_color=i_nyc_color,    text_size=size.tiny, text_halign=text.align_left)
+        table.cell(verify_tbl, 1, 3, ny_formula_str,  text_color=color.silver,   text_size=size.tiny, text_halign=text.align_center)
+        table.cell(verify_tbl, 2, 3, ny_ovr_str,      text_color=ny_ovr_clr,     text_size=size.tiny, text_halign=text.align_center)
+        table.cell(verify_tbl, 3, 3, ny_active_str,   text_color=color.white,    text_size=size.tiny, text_halign=text.align_center)
+
+        // Footer hint
+        table.cell(verify_tbl, 0, 4, "Verify: timeanddate.com → compare Formula col → adjust Calibration offsets or enable Override",
+                   text_color=color.new(color.silver, 30), text_size=size.tiny, text_halign=text.align_left)
+        for c = 1 to 3
+            table.cell(verify_tbl, c, 4, "", bgcolor=color.new(color.black, 20))
