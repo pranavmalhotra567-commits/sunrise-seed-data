@@ -182,13 +182,13 @@ _sz() => i_label_size == "tiny" ? size.tiny : i_label_size == "normal" ? size.no
 _create(k, dateInt, clr, name, tz, is_override) =>
     fill = color.new(clr, i_fill_transp)
     bord = i_border_vis ? color.new(clr, 0) : color.new(color.white, 100)
-    bx   = box.new(bar_index, high, bar_index + 1, low,
+    bx   = box.new(time, high, time + 60000, low,
                    bgcolor=fill, border_color=bord, border_width=i_border_width,
-                   extend=extend.right, xloc=xloc.bar_index)
+                   extend=extend.right, xloc=xloc.bar_time)
 
     eq_price = (high + low) / 2.0
-    eq = i_show_eq ? line.new(bar_index, eq_price, bar_index+1, eq_price,
-                              xloc=xloc.bar_index, extend=extend.right,
+    eq = i_show_eq ? line.new(time, eq_price, time + 60000, eq_price,
+                              xloc=xloc.bar_time, extend=extend.right,
                               color=color.new(clr, 35), width=1,
                               style=line.style_dashed) : na
 
@@ -196,10 +196,10 @@ _create(k, dateInt, clr, name, tz, is_override) =>
     if i_show_labels
         t_str    = str.tostring(hour(time, tz), "00") + ":" + str.tostring(minute(time, tz), "00")
         src_mark = is_override ? " ✓" : ""
-        lbl := label.new(bar_index, high, name + "\n" + t_str + src_mark,
+        lbl := label.new(time, high, name + "\n" + t_str + src_mark,
                          style=label.style_label_down, color=color.new(clr, 10),
                          textcolor=color.white, size=_sz(),
-                         xloc=xloc.bar_index, yloc=yloc.price)
+                         xloc=xloc.bar_time, yloc=yloc.price)
 
     zones.push(Zone.new(key=k, date_int=dateInt, bx=bx, eq=eq, lbl=lbl, is_override=is_override))
 
