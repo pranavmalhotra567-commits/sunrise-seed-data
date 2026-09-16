@@ -432,6 +432,24 @@
     }
   },
   {
+    "city": "tokyo",
+    "local_date": "2026-09-08",
+    "local_sunrise": "05:18",
+    "has_seconds": false,
+    "iana_timezone": "Asia/Tokyo",
+    "utc_timestamp_ms": 1788812280000,
+    "candle_open_utc_ms": 1788812280000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 44,
+      "calculated": "05:17:15",
+      "note": "Delta 44s elevated but within tolerance (120s max)"
+    }
+  },
+  {
     "city": "london",
     "local_date": "2026-09-08",
     "local_sunrise": "06:24",
