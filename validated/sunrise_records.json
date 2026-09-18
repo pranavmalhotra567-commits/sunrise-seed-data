@@ -18,6 +18,24 @@
     }
   },
   {
+    "city": "london",
+    "local_date": "2026-09-18",
+    "local_sunrise": "06:40",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1789710000000,
+    "candle_open_utc_ms": 1789710000000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 51,
+      "calculated": "06:39:08",
+      "note": "Delta 51s elevated but within tolerance (120s max)"
+    }
+  },
+  {
     "city": "tokyo",
     "local_date": "2026-09-17",
     "local_sunrise": "05:25",
