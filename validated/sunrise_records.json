@@ -1,6 +1,24 @@
 [
   {
     "city": "tokyo",
+    "local_date": "2026-09-18",
+    "local_sunrise": "05:25",
+    "has_seconds": false,
+    "iana_timezone": "Asia/Tokyo",
+    "utc_timestamp_ms": 1789676700000,
+    "candle_open_utc_ms": 1789676700000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 11,
+      "calculated": "05:24:48",
+      "note": "Delta 11s within acceptable range"
+    }
+  },
+  {
+    "city": "tokyo",
     "local_date": "2026-09-17",
     "local_sunrise": "05:25",
     "has_seconds": false,
@@ -8,7 +26,7 @@
     "utc_timestamp_ms": 1789590300000,
     "candle_open_utc_ms": 1789590300000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=9&year=2026",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "WARNING",
@@ -26,7 +44,7 @@
     "utc_timestamp_ms": 1789623480000,
     "candle_open_utc_ms": 1789623480000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/uk/london",
+    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "PASS",
@@ -44,7 +62,7 @@
     "utc_timestamp_ms": 1789641480000,
     "candle_open_utc_ms": 1789641480000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/usa/new-york",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "PASS",
@@ -591,60 +609,6 @@
       "delta_seconds": 25,
       "calculated": "06:28:34",
       "note": "Delta 25s within acceptable range"
-    }
-  },
-  {
-    "city": "tokyo",
-    "local_date": "2026-09-06",
-    "local_sunrise": "05:16",
-    "has_seconds": false,
-    "iana_timezone": "Asia/Tokyo",
-    "utc_timestamp_ms": 1788639360000,
-    "candle_open_utc_ms": 1788639360000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 15,
-      "calculated": "05:15:44",
-      "note": "Delta 15s within acceptable range"
-    }
-  },
-  {
-    "city": "london",
-    "local_date": "2026-09-06",
-    "local_sunrise": "06:20",
-    "has_seconds": false,
-    "iana_timezone": "Europe/London",
-    "utc_timestamp_ms": 1788672000000,
-    "candle_open_utc_ms": 1788672000000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 0,
-      "calculated": "06:19:59",
-      "note": "Delta 0s within acceptable range"
-    }
-  },
-  {
-    "city": "newyork",
-    "local_date": "2026-09-06",
-    "local_sunrise": "06:28",
-    "has_seconds": false,
-    "iana_timezone": "America/New_York",
-    "utc_timestamp_ms": 1788690480000,
-    "candle_open_utc_ms": 1788690480000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 23,
-      "calculated": "06:27:36",
-      "note": "Delta 23s within acceptable range"
     }
   }
 ]
