@@ -2,19 +2,19 @@
   {
     "city": "tokyo",
     "local_date": "2026-09-20",
-    "local_sunrise": "05:27",
+    "local_sunrise": "05:28",
     "has_seconds": false,
     "iana_timezone": "Asia/Tokyo",
-    "utc_timestamp_ms": 1789849620000,
-    "candle_open_utc_ms": 1789849620000,
+    "utc_timestamp_ms": 1789849680000,
+    "candle_open_utc_ms": 1789849680000,
     "source": "timeanddate.com",
     "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "WARNING",
-      "delta_seconds": 40,
+      "delta_seconds": 100,
       "calculated": "05:26:19",
-      "note": "Delta 40s elevated but within tolerance (120s max)"
+      "note": "Delta 100s elevated but within tolerance (120s max)"
     }
   },
   {
