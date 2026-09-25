@@ -8,7 +8,7 @@
     "utc_timestamp_ms": 1790281860000,
     "candle_open_utc_ms": 1790281860000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=9&year=2026",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "WARNING",
@@ -44,7 +44,7 @@
     "utc_timestamp_ms": 1790333160000,
     "candle_open_utc_ms": 1790333160000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/usa/new-york",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "PASS",
@@ -306,6 +306,24 @@
     }
   },
   {
+    "city": "newyork",
+    "local_date": "2026-09-20",
+    "local_sunrise": "06:41",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1789900860000,
+    "candle_open_utc_ms": 1789900860000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 16,
+      "calculated": "06:41:16",
+      "note": "Delta 16s within acceptable range"
+    }
+  },
+  {
     "city": "tokyo",
     "local_date": "2026-09-19",
     "local_sunrise": "05:26",
@@ -447,6 +465,24 @@
       "delta_seconds": 27,
       "calculated": "06:37:32",
       "note": "Delta 27s within acceptable range"
+    }
+  },
+  {
+    "city": "newyork",
+    "local_date": "2026-09-17",
+    "local_sunrise": "06:38",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1789641480000,
+    "candle_open_utc_ms": 1789641480000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 19,
+      "calculated": "06:38:19",
+      "note": "Delta 19s within acceptable range"
     }
   },
   {
