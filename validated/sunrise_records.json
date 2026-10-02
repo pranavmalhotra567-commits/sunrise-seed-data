@@ -2,19 +2,19 @@
   {
     "city": "tokyo",
     "local_date": "2026-10-02",
-    "local_sunrise": "05:36",
+    "local_sunrise": "05:37",
     "has_seconds": false,
     "iana_timezone": "Asia/Tokyo",
-    "utc_timestamp_ms": 1790886960000,
-    "candle_open_utc_ms": 1790886960000,
+    "utc_timestamp_ms": 1790887020000,
+    "candle_open_utc_ms": 1790887020000,
     "source": "timeanddate.com",
     "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 22,
+      "status": "WARNING",
+      "delta_seconds": 82,
       "calculated": "05:35:37",
-      "note": "Delta 22s within acceptable range"
+      "note": "Delta 82s elevated but within tolerance (120s max)"
     }
   },
   {
@@ -234,6 +234,24 @@
     }
   },
   {
+    "city": "london",
+    "local_date": "2026-09-28",
+    "local_sunrise": "06:56",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1790574960000,
+    "candle_open_utc_ms": 1790574960000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 45,
+      "calculated": "06:55:14",
+      "note": "Delta 45s elevated but within tolerance (120s max)"
+    }
+  },
+  {
     "city": "newyork",
     "local_date": "2026-09-28",
     "local_sunrise": "06:49",
@@ -339,6 +357,24 @@
       "delta_seconds": 0,
       "calculated": "06:52:00",
       "note": "Delta 0s within acceptable range"
+    }
+  },
+  {
+    "city": "newyork",
+    "local_date": "2026-09-26",
+    "local_sunrise": "06:47",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1790419620000,
+    "candle_open_utc_ms": 1790419620000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 12,
+      "calculated": "06:47:12",
+      "note": "Delta 12s within acceptable range"
     }
   },
   {
