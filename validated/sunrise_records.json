@@ -1,5 +1,23 @@
 [
   {
+    "city": "tokyo",
+    "local_date": "2026-10-04",
+    "local_sunrise": "05:38",
+    "has_seconds": false,
+    "iana_timezone": "Asia/Tokyo",
+    "utc_timestamp_ms": 1791059880000,
+    "candle_open_utc_ms": 1791059880000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 46,
+      "calculated": "05:37:13",
+      "note": "Delta 46s elevated but within tolerance (120s max)"
+    }
+  },
+  {
     "city": "london",
     "local_date": "2026-10-04",
     "local_sunrise": "07:05",
@@ -198,24 +216,6 @@
     }
   },
   {
-    "city": "london",
-    "local_date": "2026-09-30",
-    "local_sunrise": "06:59",
-    "has_seconds": false,
-    "iana_timezone": "Europe/London",
-    "utc_timestamp_ms": 1790747940000,
-    "candle_open_utc_ms": 1790747940000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 30,
-      "calculated": "06:58:29",
-      "note": "Delta 30s within acceptable range"
-    }
-  },
-  {
     "city": "newyork",
     "local_date": "2026-09-30",
     "local_sunrise": "06:51",
@@ -249,24 +249,6 @@
       "delta_seconds": 44,
       "calculated": "05:33:15",
       "note": "Delta 44s elevated but within tolerance (120s max)"
-    }
-  },
-  {
-    "city": "london",
-    "local_date": "2026-09-29",
-    "local_sunrise": "06:57",
-    "has_seconds": false,
-    "iana_timezone": "Europe/London",
-    "utc_timestamp_ms": 1790661420000,
-    "candle_open_utc_ms": 1790661420000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 8,
-      "calculated": "06:56:51",
-      "note": "Delta 8s within acceptable range"
     }
   },
   {
@@ -378,24 +360,6 @@
     }
   },
   {
-    "city": "newyork",
-    "local_date": "2026-09-27",
-    "local_sunrise": "06:48",
-    "has_seconds": false,
-    "iana_timezone": "America/New_York",
-    "utc_timestamp_ms": 1790506080000,
-    "candle_open_utc_ms": 1790506080000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 12,
-      "calculated": "06:48:12",
-      "note": "Delta 12s within acceptable range"
-    }
-  },
-  {
     "city": "tokyo",
     "local_date": "2026-09-26",
     "local_sunrise": "05:31",
@@ -450,24 +414,6 @@
     }
   },
   {
-    "city": "tokyo",
-    "local_date": "2026-09-25",
-    "local_sunrise": "05:31",
-    "has_seconds": false,
-    "iana_timezone": "Asia/Tokyo",
-    "utc_timestamp_ms": 1790281860000,
-    "candle_open_utc_ms": 1790281860000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "WARNING",
-      "delta_seconds": 50,
-      "calculated": "05:30:09",
-      "note": "Delta 50s elevated but within tolerance (120s max)"
-    }
-  },
-  {
     "city": "london",
     "local_date": "2026-09-25",
     "local_sunrise": "06:51",
@@ -501,24 +447,6 @@
       "delta_seconds": 12,
       "calculated": "06:46:12",
       "note": "Delta 12s within acceptable range"
-    }
-  },
-  {
-    "city": "tokyo",
-    "local_date": "2026-09-24",
-    "local_sunrise": "05:30",
-    "has_seconds": false,
-    "iana_timezone": "Asia/Tokyo",
-    "utc_timestamp_ms": 1790195400000,
-    "candle_open_utc_ms": 1790195400000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=9&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "WARNING",
-      "delta_seconds": 36,
-      "calculated": "05:29:23",
-      "note": "Delta 36s elevated but within tolerance (120s max)"
     }
   },
   {
