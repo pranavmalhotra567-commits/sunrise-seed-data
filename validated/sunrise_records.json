@@ -18,6 +18,42 @@
     }
   },
   {
+    "city": "london",
+    "local_date": "2026-10-05",
+    "local_sunrise": "07:07",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1791180420000,
+    "candle_open_utc_ms": 1791180420000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 19,
+      "calculated": "07:06:40",
+      "note": "Delta 19s within acceptable range"
+    }
+  },
+  {
+    "city": "newyork",
+    "local_date": "2026-10-05",
+    "local_sunrise": "06:56",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1791197760000,
+    "candle_open_utc_ms": 1791197760000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 19,
+      "calculated": "06:56:19",
+      "note": "Delta 19s within acceptable range"
+    }
+  },
+  {
     "city": "tokyo",
     "local_date": "2026-10-04",
     "local_sunrise": "05:38",
@@ -360,6 +396,24 @@
     }
   },
   {
+    "city": "london",
+    "local_date": "2026-09-28",
+    "local_sunrise": "06:56",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1790574960000,
+    "candle_open_utc_ms": 1790574960000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 45,
+      "calculated": "06:55:14",
+      "note": "Delta 45s elevated but within tolerance (120s max)"
+    }
+  },
+  {
     "city": "newyork",
     "local_date": "2026-09-28",
     "local_sunrise": "06:49",
@@ -393,6 +447,24 @@
       "delta_seconds": 17,
       "calculated": "05:31:42",
       "note": "Delta 17s within acceptable range"
+    }
+  },
+  {
+    "city": "london",
+    "local_date": "2026-09-27",
+    "local_sunrise": "06:54",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1790488440000,
+    "candle_open_utc_ms": 1790488440000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 22,
+      "calculated": "06:53:37",
+      "note": "Delta 22s within acceptable range"
     }
   },
   {
@@ -450,6 +522,24 @@
     }
   },
   {
+    "city": "newyork",
+    "local_date": "2026-09-26",
+    "local_sunrise": "06:47",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1790419620000,
+    "candle_open_utc_ms": 1790419620000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 12,
+      "calculated": "06:47:12",
+      "note": "Delta 12s within acceptable range"
+    }
+  },
+  {
     "city": "tokyo",
     "local_date": "2026-09-25",
     "local_sunrise": "05:31",
@@ -465,6 +555,24 @@
       "delta_seconds": 50,
       "calculated": "05:30:09",
       "note": "Delta 50s elevated but within tolerance (120s max)"
+    }
+  },
+  {
+    "city": "london",
+    "local_date": "2026-09-25",
+    "local_sunrise": "06:51",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1790315460000,
+    "candle_open_utc_ms": 1790315460000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 36,
+      "calculated": "06:50:23",
+      "note": "Delta 36s elevated but within tolerance (120s max)"
     }
   },
   {
