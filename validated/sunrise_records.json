@@ -522,6 +522,24 @@
     }
   },
   {
+    "city": "newyork",
+    "local_date": "2026-09-30",
+    "local_sunrise": "06:51",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1790765460000,
+    "candle_open_utc_ms": 1790765460000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=9&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 13,
+      "calculated": "06:51:13",
+      "note": "Delta 13s within acceptable range"
+    }
+  },
+  {
     "city": "tokyo",
     "local_date": "2026-09-29",
     "local_sunrise": "05:34",
