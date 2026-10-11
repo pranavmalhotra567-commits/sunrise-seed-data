@@ -8,7 +8,7 @@
     "utc_timestamp_ms": 1791664980000,
     "candle_open_utc_ms": 1791664980000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=10&year=2026",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "PASS",
@@ -234,6 +234,24 @@
     }
   },
   {
+    "city": "london",
+    "local_date": "2026-10-07",
+    "local_sunrise": "07:10",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1791353400000,
+    "candle_open_utc_ms": 1791353400000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london?month=10&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 0,
+      "calculated": "07:09:59",
+      "note": "Delta 0s within acceptable range"
+    }
+  },
+  {
     "city": "newyork",
     "local_date": "2026-10-07",
     "local_sunrise": "06:58",
@@ -338,6 +356,24 @@
       "status": "PASS",
       "delta_seconds": 19,
       "calculated": "07:06:40",
+      "note": "Delta 19s within acceptable range"
+    }
+  },
+  {
+    "city": "newyork",
+    "local_date": "2026-10-05",
+    "local_sunrise": "06:56",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1791197760000,
+    "candle_open_utc_ms": 1791197760000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york?month=10&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 19,
+      "calculated": "06:56:19",
       "note": "Delta 19s within acceptable range"
     }
   },
@@ -501,6 +537,24 @@
       "delta_seconds": 15,
       "calculated": "06:53:15",
       "note": "Delta 15s within acceptable range"
+    }
+  },
+  {
+    "city": "tokyo",
+    "local_date": "2026-10-01",
+    "local_sunrise": "05:35",
+    "has_seconds": false,
+    "iana_timezone": "Asia/Tokyo",
+    "utc_timestamp_ms": 1790800500000,
+    "candle_open_utc_ms": 1790800500000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=10&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 9,
+      "calculated": "05:34:50",
+      "note": "Delta 9s within acceptable range"
     }
   },
   {
