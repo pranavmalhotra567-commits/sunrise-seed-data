@@ -18,6 +18,42 @@
     }
   },
   {
+    "city": "london",
+    "local_date": "2026-10-12",
+    "local_sunrise": "07:19",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1791785940000,
+    "candle_open_utc_ms": 1791785940000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 40,
+      "calculated": "07:18:19",
+      "note": "Delta 40s elevated but within tolerance (120s max)"
+    }
+  },
+  {
+    "city": "newyork",
+    "local_date": "2026-10-12",
+    "local_sunrise": "07:04",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1791803040000,
+    "candle_open_utc_ms": 1791803040000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 21,
+      "calculated": "07:03:38",
+      "note": "Delta 21s within acceptable range"
+    }
+  },
+  {
     "city": "tokyo",
     "local_date": "2026-10-11",
     "local_sunrise": "05:43",
