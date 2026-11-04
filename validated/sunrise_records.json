@@ -36,24 +36,6 @@
     }
   },
   {
-    "city": "newyork",
-    "local_date": "2026-11-04",
-    "local_sunrise": "06:29",
-    "has_seconds": false,
-    "iana_timezone": "America/New_York",
-    "utc_timestamp_ms": 1793791740000,
-    "candle_open_utc_ms": 1793791740000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/usa/new-york",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 29,
-      "calculated": "06:29:29",
-      "note": "Delta 29s within acceptable range"
-    }
-  },
-  {
     "city": "tokyo",
     "local_date": "2026-11-03",
     "local_sunrise": "06:04",
