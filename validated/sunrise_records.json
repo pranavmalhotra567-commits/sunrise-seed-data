@@ -8,13 +8,49 @@
     "utc_timestamp_ms": 1794345120000,
     "candle_open_utc_ms": 1794345120000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=11&year=2026",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "PASS",
       "delta_seconds": 28,
       "calculated": "06:11:31",
       "note": "Delta 28s within acceptable range"
+    }
+  },
+  {
+    "city": "london",
+    "local_date": "2026-11-11",
+    "local_sunrise": "07:11",
+    "has_seconds": false,
+    "iana_timezone": "Europe/London",
+    "utc_timestamp_ms": 1794381060000,
+    "candle_open_utc_ms": 1794381060000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/uk/london",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "WARNING",
+      "delta_seconds": 33,
+      "calculated": "07:10:26",
+      "note": "Delta 33s elevated but within tolerance (120s max)"
+    }
+  },
+  {
+    "city": "newyork",
+    "local_date": "2026-11-11",
+    "local_sunrise": "06:38",
+    "has_seconds": false,
+    "iana_timezone": "America/New_York",
+    "utc_timestamp_ms": 1794397080000,
+    "candle_open_utc_ms": 1794397080000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/usa/new-york",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 14,
+      "calculated": "06:37:45",
+      "note": "Delta 14s within acceptable range"
     }
   },
   {
@@ -285,6 +321,24 @@
       "delta_seconds": 9,
       "calculated": "06:31:50",
       "note": "Delta 9s within acceptable range"
+    }
+  },
+  {
+    "city": "tokyo",
+    "local_date": "2026-11-05",
+    "local_sunrise": "06:06",
+    "has_seconds": false,
+    "iana_timezone": "Asia/Tokyo",
+    "utc_timestamp_ms": 1793826360000,
+    "candle_open_utc_ms": 1793826360000,
+    "source": "timeanddate.com",
+    "source_url": "https://www.timeanddate.com/sun/japan/tokyo?month=11&year=2026",
+    "confirmation_status": "CONFIRMED",
+    "crosscheck": {
+      "status": "PASS",
+      "delta_seconds": 23,
+      "calculated": "06:05:36",
+      "note": "Delta 23s within acceptable range"
     }
   },
   {
