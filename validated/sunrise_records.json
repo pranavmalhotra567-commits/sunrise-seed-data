@@ -26,7 +26,7 @@
     "utc_timestamp_ms": 1794381060000,
     "candle_open_utc_ms": 1794381060000,
     "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/uk/london",
+    "source_url": "https://www.timeanddate.com/sun/uk/london?month=11&year=2026",
     "confirmation_status": "CONFIRMED",
     "crosscheck": {
       "status": "WARNING",
@@ -501,24 +501,6 @@
       "delta_seconds": 17,
       "calculated": "06:02:42",
       "note": "Delta 17s within acceptable range"
-    }
-  },
-  {
-    "city": "london",
-    "local_date": "2026-11-02",
-    "local_sunrise": "06:55",
-    "has_seconds": false,
-    "iana_timezone": "Europe/London",
-    "utc_timestamp_ms": 1793602500000,
-    "candle_open_utc_ms": 1793602500000,
-    "source": "timeanddate.com",
-    "source_url": "https://www.timeanddate.com/sun/uk/london?month=11&year=2026",
-    "confirmation_status": "CONFIRMED",
-    "crosscheck": {
-      "status": "PASS",
-      "delta_seconds": 21,
-      "calculated": "06:54:38",
-      "note": "Delta 21s within acceptable range"
     }
   },
   {
